@@ -1,0 +1,9 @@
+---
+# defaults file for transmission
+transmission_ver: '2.92'
+
+transmission_mirror: https://github.com/transmission/transmission-releases/raw/master
+
+transmission_parent_src_dir: /usr/local
+
+transmission_cleanup: False
