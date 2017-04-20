@@ -22,8 +22,9 @@
   become: yes
   become_user: root
   get_url:
-    url: '{{transmission_tgz_url}}'
+    url: '{{transmission_txz_url}}'
     dest: /tmp/{{transmission_txz}}
+    checksum: '{{transmission_checksum}}'
     mode: 0644
 
 - name: unarchive....
@@ -37,7 +38,7 @@
 
 - name: configure...
   become: yes
-  beecome_user: root
+  become_user: root
   command: ./configure
   args:
     chdir: '{{transmission_src_dir}}'
