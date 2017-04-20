@@ -1,6 +1,7 @@
 ---
 transmission_dep_pkgs:
   - intltool
+  - libssl-dev
   - libcurl4-openssl-dev
   - libglib2.0-dev
   - libevent-dev
