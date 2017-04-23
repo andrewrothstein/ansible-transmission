@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/andrewrothstein/ansible-transmission.svg?style=svg)](https://circleci.com/gh/andrewrothstein/ansible-transmission)
+[![Build Status](https://travis-ci.org/andrewrothstein/ansible-transmission.svg?branch=master)](https://travis-ci.org/andrewrothstein/ansible-transmission)
 andrewrothstein.transmission
 =========
 
