@@ -12,6 +12,10 @@ addons:
     packages:
       - python-pip
 
+branches:
+  except:
+    - /^v\d+\.\d+(\.\d+)?(-\S*)?$/
+
 env:
   - OS=centos_7
   - OS=fedora_23
