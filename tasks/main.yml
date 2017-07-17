@@ -31,7 +31,7 @@
   become: yes
   become_user: root
   unarchive:
-    remote_src: no
+    remote_src: yes
     src: /tmp/{{transmission_txz}}
     dest: '{{transmission_parent_src_dir}}'
     creates: '{{transmission_src_dir}}'
