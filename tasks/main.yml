@@ -10,60 +10,70 @@
       paths:
         - '{{role_path}}/vars'
 
-- name: install dep pkgs...
+- name: check for install...
   become: yes
-  become_user: root
-  with_items: '{{transmission_dep_pkgs|default([])}}'
-  package:
-    name: '{{item}}'
-    state: present
+  stat:
+    path: /usr/local/bin/transmission-daemon
+  changed_when: False
+  register: transmission_binary
+- when: not transmission_binary.stat.exists
+  block:
+    - name: install dep pkgs...
+      become: yes
+      become_user: root
+      with_items: '{{transmission_dep_pkgs|default([])}}'
+      package:
+        name: '{{item}}'
+        state: present
 
-- name: download src...
-  become: yes
-  become_user: root
-  get_url:
-    url: '{{transmission_txz_url}}'
-    dest: /tmp/{{transmission_txz}}
-    checksum: '{{transmission_checksum}}'
-    mode: 0644
+    - name: download src...
+      become: yes
+      become_user: root
+      get_url:
+        url: '{{transmission_txz_url}}'
+        dest: /tmp/{{transmission_txz}}
+        checksum: '{{transmission_checksum}}'
+        mode: 0644
 
-- name: unarchive....
-  become: yes
-  become_user: root
-  unarchive:
-    remote_src: yes
-    src: /tmp/{{transmission_txz}}
-    dest: '{{transmission_parent_src_dir}}'
-    creates: '{{transmission_src_dir}}'
+    - name: unarchive....
+      become: yes
+      become_user: root
+      unarchive:
+        remote_src: yes
+        src: /tmp/{{transmission_txz}}
+        dest: '{{transmission_parent_src_dir}}'
+        creates: '{{transmission_src_dir}}'
 
-- name: configure...
-  become: yes
-  become_user: root
-  command: ./configure
-  args:
-    chdir: '{{transmission_src_dir}}'
-    creates: '{{transmission_src_dir}}/Makefile'
+    - name: configure...
+      become: yes
+      become_user: root
+      command: ./configure
+      args:
+        chdir: '{{transmission_src_dir}}'
+        creates: '{{transmission_src_dir}}/Makefile'
 
-- name: make...
-  become: yes
-  become_user: root
-  command: make
-  args:
-    chdir: '{{transmission_src_dir}}'
-    creates: '{{transmission_src_dir}}/daemon/transmission-daemon'
+    - name: make...
+      become: yes
+      become_user: root
+      command: make
+      args:
+        chdir: '{{transmission_src_dir}}'
+        creates: '{{transmission_src_dir}}/daemon/transmission-daemon'
 
-- name: install...
-  become: yes
-  become_user: root
-  command: make install
-  args:
-    chdir: '{{transmission_src_dir}}'
-    creates: /usr/local/bin/transmission-daemon
-
-- name: cleanup...
-  become: yes
-  become_user: root
-  when: transmission_cleanup
-  file:
-    path: '{{transmission_src_dir}}'
-    state: absent
+    - name: install...
+      become: yes
+      become_user: root
+      command: make install
+      args:
+        chdir: '{{transmission_src_dir}}'
+        creates: /usr/local/bin/transmission-daemon
+  always:
+    - name: cleanup...
+      become: yes
+      become_user: root
+      with_items:
+        - '{{transmission_src_dir}}'
+        - /tmp/{{transmission_txz}}
+      file:
+        path: '{{item}}'
+        state: absent

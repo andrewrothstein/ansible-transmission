@@ -1,10 +1,12 @@
 ---
 # defaults file for transmission
-transmission_ver: '2.92'
-transmission_checksum: sha256:3a8d045c306ad9acb7bf81126939b9594553a388482efa0ec1bfb67b22acd35f
+transmission_ver: '2.93'
+transmission_checksums:
+  # https://github.com/transmission/transmission-releases/raw/master/transmission-2.92.tar.xz
+  '2.92': sha256:3a8d045c306ad9acb7bf81126939b9594553a388482efa0ec1bfb67b22acd35f
+  # https://github.com/transmission/transmission-releases/raw/master/transmission-2.93.tar.xz
+  '2.93': sha256:8815920e0a4499bcdadbbe89a4115092dab42ce5199f71ff9a926cfd12b9b90b
 
 transmission_mirror: https://github.com/transmission/transmission-releases/raw/master
 
 transmission_parent_src_dir: /usr/local
-
-transmission_cleanup: False

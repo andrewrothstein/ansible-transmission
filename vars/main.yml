@@ -3,5 +3,5 @@
 transmission_name: transmission-{{transmission_ver}}
 transmission_txz: '{{transmission_name}}.tar.xz'
 transmission_txz_url: '{{transmission_mirror}}/{{transmission_txz}}'
-
+transmission_checksum: '{{transmission_checksums[transmission_ver]}}'
 transmission_src_dir: '{{transmission_parent_src_dir}}/{{transmission_name}}'
