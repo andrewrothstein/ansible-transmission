@@ -1,29 +1,27 @@
----
+dependencies:
+- role: andrewrothstein.unarchive-deps
+  version: v1.0.12
+- role: andrewrothstein.gcc-toolbox
+  version: v1.0.7
+- role: andrewrothstein.epel
+  version: v1.0.6
 galaxy_info:
   author: Andrew Rothstein
-  description: installs transmission bittorrent client
   company: BlackRock
+  description: installs transmission bittorrent client
+  galaxy_tags:
+  - transmission
+  - bittorrent
   license:
-    - MIT
+  - MIT
   min_ansible_version: 2.0
   platforms:
-    - name: EL
-      versions:
-        - all
-    - name: Fedora
-      versions:
-        - all
-    - name: Ubuntu
-      versions:
-        - all
-  galaxy_tags:
-    - transmission
-    - bittorrent
-
-dependencies:
-  - role: andrewrothstein.unarchive-deps
-    version: v1.0.10
-  - role: andrewrothstein.gcc-toolbox
-    version: v1.0.7
-  - role: andrewrothstein.epel
-    version: v1.0.6
+  - name: EL
+    versions:
+    - all
+  - name: Fedora
+    versions:
+    - all
+  - name: Ubuntu
+    versions:
+    - all
