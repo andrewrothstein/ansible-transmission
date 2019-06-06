@@ -1,0 +1,7 @@
+---
+transmission_dep_pkgs:
+  - intltool 
+  - libssl1.1
+  - curl-dev
+  - libevent-dev
+  - miniupnpc-dev
