@@ -10,6 +10,7 @@ env:
 - OS=alpine_3.9
 - OS=alpine_edge
 - OS=centos_7
+- OS=centos_8
 - OS=fedora_23
 - OS=fedora_24
 - OS=fedora_25
