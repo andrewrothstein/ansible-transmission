@@ -1,14 +1,14 @@
 ---
 - name: resolve platform specific vars
-  include_vars: '{{item}}'
+  include_vars: '{{ item }}'
   with_first_found:
     - files:
-        - '{{ansible_distribution}}-{{ansible_distribution_release}}.yml'
-        - '{{ansible_distribution}}.yml'
-        - '{{ansible_os_family}}.yml'
+        - '{{ ansible_distribution }}-{{ ansible_distribution_release }}.yml'
+        - '{{ ansible_distribution }}.yml'
+        - '{{ ansible_os_family }}.yml'
       skip: true
       paths:
-        - '{{role_path}}/vars'
+        - '{{ role_path }}/vars'
 
 - name: check for install...
   become: yes
@@ -21,18 +21,18 @@
     - name: install dep pkgs...
       become: yes
       become_user: root
-      with_items: '{{transmission_dep_pkgs|default([])}}'
+      with_items: '{{ transmission_dep_pkgs|default([]) }}'
       package:
-        name: '{{item}}'
+        name: '{{ item }}'
         state: present
 
     - name: download src...
       become: yes
       become_user: root
       get_url:
-        url: '{{transmission_txz_url}}'
-        dest: /tmp/{{transmission_txz}}
-        checksum: '{{transmission_checksum}}'
+        url: '{{ transmission_txz_url }}'
+        dest: /tmp/{{ transmission_txz }}
+        checksum: '{{ transmission_checksum }}'
         mode: 0644
 
     - name: unarchive....
@@ -40,40 +40,40 @@
       become_user: root
       unarchive:
         remote_src: yes
-        src: /tmp/{{transmission_txz}}
-        dest: '{{transmission_parent_src_dir}}'
-        creates: '{{transmission_src_dir}}'
+        src: /tmp/{{ transmission_txz }}
+        dest: '{{ transmission_parent_src_dir }}'
+        creates: '{{ transmission_src_dir }}'
 
     - name: configure...
       become: yes
       become_user: root
-      command: ./configure
+      command: '{{ transmission_src_dir }}/configure'
       args:
-        chdir: '{{transmission_src_dir}}'
-        creates: '{{transmission_src_dir}}/Makefile'
+        chdir: '{{ transmission_src_dir }}'
+        creates: '{{ transmission_src_dir }}/Makefile'
 
     - name: make...
       become: yes
       become_user: root
       command: make
       args:
-        chdir: '{{transmission_src_dir}}'
-        creates: '{{transmission_src_dir}}/daemon/transmission-daemon'
+        chdir: '{{ transmission_src_dir }}'
+        creates: '{{ transmission_src_dir }}/daemon/transmission-daemon'
 
     - name: install...
       become: yes
       become_user: root
       command: make install
       args:
-        chdir: '{{transmission_src_dir}}'
+        chdir: '{{ transmission_src_dir }}'
         creates: /usr/local/bin/transmission-daemon
   always:
     - name: cleanup...
       become: yes
       become_user: root
       with_items:
-        - '{{transmission_src_dir}}'
-        - /tmp/{{transmission_txz}}
+        - '{{ transmission_src_dir }}'
+        - /tmp/{{ transmission_txz }}
       file:
-        path: '{{item}}'
+        path: '{{ item }}'
         state: absent
