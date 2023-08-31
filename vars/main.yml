@@ -1,7 +1,10 @@
 ---
 # vars file for transmission
-transmission_name: transmission-{{transmission_ver}}
-transmission_txz: '{{transmission_name}}.tar.xz'
-transmission_txz_url: '{{transmission_mirror}}/{{transmission_txz}}'
-transmission_checksum: '{{transmission_checksums[transmission_ver]}}'
-transmission_src_dir: '{{transmission_parent_src_dir}}/{{transmission_name}}'
+transmission_name: transmission-{{ transmission_ver }}
+transmission_txz: '{{ transmission_name }}.tar.xz'
+transmission_tmp_txz: '{{ transmission_tmp_dir | default("/tmp") }}/{{ transmission_txz }}'
+transmission_txz_url: '{{ transmission_mirror }}/{{ transmission_txz }}'
+transmission_checksum: '{{ transmission_checksums[transmission_ver] }}'
+transmission_src_dir: '{{ transmission_parent_src_dir }}/{{ transmission_name }}'
+transmission_src_configure: '{{ transmission_src_dir }}/configure'
+transmission_src_Makefile: '{{ transmission_src_dir }}/Makefile'

@@ -1,4 +1,10 @@
 ---
+- include_role:
+    name: andrewrothstein.unarchivedeps
+- include_role:
+    name: andrewrothstein.gcc_toolbox
+- include_role:
+    name: andrewrothstein.epel
 - name: resolve platform specific vars
   include_vars: '{{ item }}'
   with_first_found:
@@ -11,57 +17,57 @@
         - '{{ role_path }}/vars'
 
 - name: check for install...
-  become: yes
+  become: true
   stat:
     path: /usr/local/bin/transmission-daemon
-  changed_when: False
+  changed_when: false
   register: transmission_binary
 - when: not transmission_binary.stat.exists
   block:
-    - name: install dep pkgs...
-      become: yes
+    - name: installing OS dep pkgs...
+      become: true
       become_user: root
-      with_items: '{{ transmission_dep_pkgs|default([]) }}'
+      with_items: '{{ transmission_dep_pkgs | default([]) }}'
       package:
         name: '{{ item }}'
         state: present
 
-    - name: download src...
-      become: yes
+    - name: downloading {{ transmission_txz_url }}...
+      become: true
       become_user: root
       get_url:
         url: '{{ transmission_txz_url }}'
-        dest: /tmp/{{ transmission_txz }}
+        dest: '{{ transmission_tmp_txz }}'
         checksum: '{{ transmission_checksum }}'
         mode: 0644
 
-    - name: unarchive....
-      become: yes
+    - name: unarchiving {{ transmission_tmp_txz }}...
+      become: true
       become_user: root
       unarchive:
-        remote_src: yes
-        src: /tmp/{{ transmission_txz }}
+        remote_src: true
+        src: '{{ transmission_tmp_txz }}'
         dest: '{{ transmission_parent_src_dir }}'
         creates: '{{ transmission_src_dir }}'
 
-    - name: configure...
-      become: yes
+    - name: '{{ transmission_src_configure }}...'
+      become: true
       become_user: root
-      command: '{{ transmission_src_dir }}/configure'
+      command: '{{ transmission_src_configure }}'
       args:
         chdir: '{{ transmission_src_dir }}'
-        creates: '{{ transmission_src_dir }}/Makefile'
+        creates: '{{ transmission_src_Makefile }}'
 
-    - name: make...
-      become: yes
+    - name: make (in {{ transmission_src_dir }})
+      become: true
       become_user: root
       command: make
       args:
         chdir: '{{ transmission_src_dir }}'
         creates: '{{ transmission_src_dir }}/daemon/transmission-daemon'
 
-    - name: install...
-      become: yes
+    - name: make install (in {{ transmission_src_dir }})
+      become: true
       become_user: root
       command: make install
       args:
@@ -69,11 +75,11 @@
         creates: /usr/local/bin/transmission-daemon
   always:
     - name: cleanup...
-      become: yes
+      become: true
       become_user: root
       with_items:
         - '{{ transmission_src_dir }}'
-        - /tmp/{{ transmission_txz }}
+        - '{{ transmission_tmp_txz }}'
       file:
         path: '{{ item }}'
         state: absent

@@ -1,6 +1,6 @@
-[![Build Status](https://travis-ci.org/andrewrothstein/ansible-transmission.svg?branch=master)](https://travis-ci.org/andrewrothstein/ansible-transmission)
 andrewrothstein.transmission
 =========
+![Build Status](https://github.com/andrewrothstein/ansible-transmission/actions/workflows/build.yml/badge.svg)
 
 Installs [Transmission](https://transmissionbt.com).
 
