@@ -1,17 +1,5 @@
 [
   {
-    "OS": "alpine",
-    "OS_VER": "3.17"
-  },
-  {
-    "OS": "alpine",
-    "OS_VER": "3.18"
-  },
-  {
-    "OS": "alpine",
-    "OS_VER": "edge"
-  },
-  {
     "OS": "debian",
     "OS_VER": "bookworm"
   },

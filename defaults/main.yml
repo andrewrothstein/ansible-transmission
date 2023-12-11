@@ -1,7 +1,7 @@
 ---
 # defaults file for transmission
 transmission_ver: 4.0.5
-transmission_cmake_exe: /usr/local/bin/cmake
+transmission_cmake_exe: cmake
 transmission_build_type: Release
 transmission_parent_src_dir: /usr/local
 transmission_mirror: https://github.com/transmission/transmission/releases/download
