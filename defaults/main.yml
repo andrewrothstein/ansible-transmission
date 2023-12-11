@@ -1,16 +1,9 @@
 ---
 # defaults file for transmission
-transmission_ver: 4.0.4
+transmission_ver: 4.0.5
+transmission_build_type: Release
 transmission_parent_src_dir: /usr/local
 transmission_mirror: https://github.com/transmission/transmission/releases/download
 transmission_checksums:
-  # https://github.com/transmission/transmission/releases/download/4.0.0/transmission-4.0.0.tar.xz
-  '4.0.0': sha256:af4f023c0b3f2417f62b314d84ea7f329ca080f86664f24b44246a8c50c6b10a
-  # https://github.com/transmission/transmission/releases/download/4.0.1/transmission-4.0.1.tar.xz
-  '4.0.1': sha256:8fc5aef23638c983406f6a3ee9918369e4cdc84e3228bd2fb3d01dd55cdad900
-  # https://github.com/transmission/transmission/releases/download/4.0.2/transmission-4.0.2.tar.xz
-  '4.0.2': sha256:39bf7a104a722805a9dc089cdaaffe33bf90b82230a7ea7f340cae59f00a2ee8
-  # https://github.com/transmission/transmission/releases/download/4.0.3/transmission-4.0.3.tar.xz
-  '4.0.3': sha256:b6b01fd58e42bb14f7aba0253db932ced050fcd2bba5d9f8469d77ddd8ad545a
-  # https://github.com/transmission/transmission/releases/download/4.0.4/transmission-4.0.4.tar.xz
-  '4.0.4': sha256:15f7b4318fdfbffb19aa8d9a6b0fd89348e6ef1e86baa21a0806ffd1893bd5a6
+  # https://github.com/transmission/transmission/releases/download/4.0.5/transmission-4.0.5.tar.xz
+  '4.0.5': sha256:fd68ff114a479200043c30c7e69dba4c1932f7af36ca4c5b5d2edcb5866e6357

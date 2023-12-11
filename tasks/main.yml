@@ -50,28 +50,28 @@
         dest: '{{ transmission_parent_src_dir }}'
         creates: '{{ transmission_src_dir }}'
 
-    - name: '{{ transmission_src_configure }}...'
+    - name: '{{ transmission_src_cmake }}'
       become: true
       become_user: root
-      command: '{{ transmission_src_configure }}'
+      command: '{{ transmission_src_cmake }}'
       args:
         chdir: '{{ transmission_src_dir }}'
-        creates: '{{ transmission_src_Makefile }}'
+        creates: '{{ transmission_src_build }}/Makefile'
 
-    - name: make (in {{ transmission_src_dir }})
+    - name: cmake --build . (in {{ transmission_src_build }})
       become: true
       become_user: root
-      command: make
+      command: cmake --build {{ transmission_src_build | quote }}
       args:
-        chdir: '{{ transmission_src_dir }}'
-        creates: '{{ transmission_src_dir }}/daemon/transmission-daemon'
+        chdir: '{{ transmission_src_build }}'
+        creates: '{{ transmission_src_build }}/daemon/transmission-daemon'
 
-    - name: make install (in {{ transmission_src_dir }})
+    - name: cmake install . (in {{ transmission_src_build }})
       become: true
       become_user: root
-      command: make install
+      command: cmake install {{ transmission_src_build | quote }}
       args:
-        chdir: '{{ transmission_src_dir }}'
+        chdir: '{{ transmission_src_build }}'
         creates: /usr/local/bin/transmission-daemon
   always:
     - name: cleanup...

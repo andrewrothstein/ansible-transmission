@@ -3,8 +3,10 @@
 transmission_name: transmission-{{ transmission_ver }}
 transmission_txz: '{{ transmission_name }}.tar.xz'
 transmission_tmp_txz: '{{ transmission_tmp_dir | default("/tmp") }}/{{ transmission_txz }}'
-transmission_txz_url: '{{ transmission_mirror }}/{{ transmission_txz }}'
+# https://github.com/transmission/transmission/releases/download/4.0.5/transmission-4.0.5.tar.xz
+transmission_txz_url: '{{ transmission_mirror }}/{{ transmission_ver }}/{{ transmission_txz }}'
 transmission_checksum: '{{ transmission_checksums[transmission_ver] }}'
 transmission_src_dir: '{{ transmission_parent_src_dir }}/{{ transmission_name }}'
-transmission_src_configure: '{{ transmission_src_dir }}/configure'
+transmission_src_cmake: cmake -B build -DCMAKE_BUILD_TYPE={{ transmission_build_type }}
+transmission_src_build: '{{ transmission_src_dir }}/build'
 transmission_src_Makefile: '{{ transmission_src_dir }}/Makefile'

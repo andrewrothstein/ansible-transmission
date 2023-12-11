@@ -6,8 +6,7 @@ galaxy_info:
   galaxy_tags:
     - transmission
     - bittorrent
-  license:
-    - MIT
+  license: MIT
   min_ansible_version: 2.0
   platforms:
     - name: Alpine
@@ -23,8 +22,8 @@ galaxy_info:
         - 9
     - name: Fedora
       versions:
-        - 37
         - 38
+        - 39
     - name: Ubuntu
       versions:
         - focal
