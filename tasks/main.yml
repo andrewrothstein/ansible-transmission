@@ -60,18 +60,18 @@
         chdir: '{{ transmission_src_dir }}'
         creates: '{{ transmission_src_build }}/Makefile'
 
-    - name: cmake --build . (in {{ transmission_src_build }})
+    - name: '{{ transmission_cmake_exe }} --build . (in {{ transmission_src_build }})'
       become: true
       become_user: root
-      command: cmake --build {{ transmission_src_build | quote }}
+      command: '{{ transmission_cmake_exe }} --build {{ transmission_src_build | quote }}'
       args:
         chdir: '{{ transmission_src_build }}'
         creates: '{{ transmission_src_build }}/daemon/transmission-daemon'
 
-    - name: cmake install . (in {{ transmission_src_build }})
+    - name: '{{ transmission_cmake_exe }} install . (in {{ transmission_src_build }})'
       become: true
       become_user: root
-      command: cmake install {{ transmission_src_build | quote }}
+      command: '{{ transmission-cmake_exe }} install {{ transmission_src_build | quote }}'
       args:
         chdir: '{{ transmission_src_build }}'
         creates: /usr/local/bin/transmission-daemon
