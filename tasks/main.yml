@@ -71,7 +71,7 @@
     - name: '{{ transmission_cmake_exe }} install . (in {{ transmission_src_build }})'
       become: true
       become_user: root
-      command: '{{ transmission-cmake_exe }} install {{ transmission_src_build | quote }}'
+      command: '{{ transmission_cmake_exe }} install {{ transmission_src_build | quote }}'
       args:
         chdir: '{{ transmission_src_build }}'
         creates: /usr/local/bin/transmission-daemon
