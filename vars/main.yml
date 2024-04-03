@@ -6,7 +6,15 @@ transmission_tmp_txz: '{{ transmission_tmp_dir | default("/tmp") }}/{{ transmiss
 # https://github.com/transmission/transmission/releases/download/4.0.5/transmission-4.0.5.tar.xz
 transmission_txz_url: '{{ transmission_mirror }}/{{ transmission_ver }}/{{ transmission_txz }}'
 transmission_checksum: '{{ transmission_checksums[transmission_ver] }}'
+
 transmission_src_dir: '{{ transmission_parent_src_dir }}/{{ transmission_name }}'
-transmission_src_cmake: '{{ transmission_cmake_exe }} -B build -DCMAKE_BUILD_TYPE={{ transmission_build_type }}'
-transmission_src_build: '{{ transmission_src_dir }}/build'
-transmission_src_Makefile: '{{ transmission_src_dir }}/Makefile'
+transmission_build_dir: '{{ transmission_src_dir }}/build'
+
+transmission_cmake_cmd: cmake -DCMAKE_BUILD_TYPE={{ transmission_build_type }} {{ transmission_src_dir }}
+transmission_Makefile: '{{ transmission_build_dir }}/Makefile'
+
+transmission_make_cmd: make -j 4
+transmission_build_exe: '{{ transmission_build_dir }}/daemon/transmission-daemon'
+
+transmission_make_install_cmd: make install
+transmission_exe: /usr/local/bin/transmission-daemon

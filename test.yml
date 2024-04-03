@@ -1,4 +1,13 @@
 ---
-- hosts: all
+- name: Testing andrewrothstein.transmission
+  hosts: all
   roles:
-    - role: '{{playbook_dir}}'
+    - role: '{{ playbook_dir }}'
+  cmds:
+    - name: Executing 'transmission-daemon --version'
+      ansible.builtin.command: transmission-daemon --version
+      changed_when: false
+      register: transmission_test_output
+    - name: Output from 'transmission-daemon --version'
+      ansible.buildin.debug:
+        msg: '{{ transmission_test_output.stdout }}'

@@ -1,14 +1,18 @@
 ---
-- include_role:
+- name: Installing andrewrothstein.unarchivedeps
+  ansible.builtin.include_role:
     name: andrewrothstein.unarchivedeps
-- include_role:
+- name: Installing andrewrothstein.gcc_toolbox
+  ansible.builtin.include_role:
     name: andrewrothstein.gcc_toolbox
-- include_role:
+- name: Installing andrewrothstein.epel
+  ansible.builtin.include_role:
     name: andrewrothstein.epel
-- include_role:
+- name: Installing andrewrothstein.cmake
+  ansible.builtin.include_role:
     name: andrewrothstein.cmake
-- name: resolve platform specific vars
-  include_vars: '{{ item }}'
+- name: Resolve platform specific vars
+  ansible.builtin.include_vars: '{{ item }}'
   with_first_found:
     - files:
         - '{{ ansible_distribution }}-{{ ansible_distribution_release }}.yml'
@@ -17,71 +21,76 @@
       skip: true
       paths:
         - '{{ role_path }}/vars'
-
-- name: check for install...
+- name: Installing OS dep pkgs...
   become: true
-  stat:
-    path: /usr/local/bin/transmission-daemon
+  become_user: root
+  with_items: '{{ transmission_dep_pkgs | default([]) }}'
+  ansible.builtin.package:
+    name: '{{ item }}'
+    state: present
+
+- name: Check for source dir at {{ transmission_src_dir }}
+  become: true
+  ansible.builtin.stat:
+    path: '{{ transmission_src_dir }}'
   changed_when: false
   register: transmission_binary
-- when: not transmission_binary.stat.exists
+- name: Downloading tand unarchiving ransmission source to {{ transmission_src_dir }}
+  when: not transmission_binary.stat.exists
   block:
-    - name: installing OS dep pkgs...
+    - name: Downloading {{ transmission_txz_url }}...
       become: true
       become_user: root
-      with_items: '{{ transmission_dep_pkgs | default([]) }}'
-      package:
-        name: '{{ item }}'
-        state: present
-
-    - name: downloading {{ transmission_txz_url }}...
-      become: true
-      become_user: root
-      get_url:
+      ansible.builtin.get_url:
         url: '{{ transmission_txz_url }}'
         dest: '{{ transmission_tmp_txz }}'
         checksum: '{{ transmission_checksum }}'
-        mode: 0644
+        mode: '644'
 
-    - name: unarchiving {{ transmission_tmp_txz }}...
+    - name: Unarchiving {{ transmission_tmp_txz }}...
       become: true
       become_user: root
-      unarchive:
+      ansible.builtin.unarchive:
         remote_src: true
         src: '{{ transmission_tmp_txz }}'
         dest: '{{ transmission_parent_src_dir }}'
         creates: '{{ transmission_src_dir }}'
-
-    - name: '{{ transmission_src_cmake }}'
-      become: true
-      become_user: root
-      command: '{{ transmission_src_cmake }}'
-      args:
-        chdir: '{{ transmission_src_dir }}'
-        creates: '{{ transmission_src_build }}/Makefile'
-
-    - name: '{{ transmission_cmake_exe }} --build . (in {{ transmission_src_build }})'
-      become: true
-      become_user: root
-      command: '{{ transmission_cmake_exe }} --build {{ transmission_src_build | quote }}'
-      args:
-        chdir: '{{ transmission_src_build }}'
-        creates: '{{ transmission_src_build }}/daemon/transmission-daemon'
-
-    - name: '{{ transmission_cmake_exe }} install . (in {{ transmission_src_build }})'
-      become: true
-      become_user: root
-      command: '{{ transmission_cmake_exe }} install {{ transmission_src_build | quote }}'
-      args:
-        chdir: '{{ transmission_src_build }}'
-        creates: /usr/local/bin/transmission-daemon
   always:
-    - name: cleanup...
+    - name: Rm -f {{ transmission_tmp_txz }}
       become: true
       become_user: root
-      with_items:
-        - '{{ transmission_src_dir }}'
-        - '{{ transmission_tmp_txz }}'
-      file:
-        path: '{{ item }}'
+      ansible.builtin.file:
+        path: '{{ transmission_tmp_txz }}'
         state: absent
+
+- name: Mkdir {{ transmission_build_dir }}
+  become: true
+  become_user: root
+  ansible.builtin.file:
+    path: '{{ transmission_build_dir }}'
+    state: directory
+    mode: '755'
+
+- name: Executing '{{ transmission_cmake_cmd }}'
+  become: true
+  become_user: root
+  ansible.builtin.command: '{{ transmission_cmake_cmd }}'
+  args:
+    chdir: '{{ transmission_build_dir }}'
+    creates: '{{ transmission_Makefile }}'
+
+- name: Executing '{{ transmission_make_cmd }}'
+  become: true
+  become_user: root
+  ansible.builtin.command: '{{ transmission_make_cmd }}'
+  args:
+    chdir: '{{ transmission_build_dir }}'
+    creates: '{{ transmission_build_exe }}'
+
+- name: Executing '{{ transmission_make_install_cmd }}'
+  become: true
+  become_user: root
+  ansible.builtin.command: '{{ transmission_cmake_install_cmd }}'
+  args:
+    chdir: '{{ transmission_build_dir }}'
+    creates: '{{ transmission_exe }}'
