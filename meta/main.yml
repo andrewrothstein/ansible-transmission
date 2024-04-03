@@ -7,7 +7,8 @@ galaxy_info:
     - transmission
     - bittorrent
   license: MIT
-  min_ansible_version: 2.0
+  min_ansible_version: '2.0'
+  namespace: andrewrothstein
   platforms:
     - name: Debian
       versions:
@@ -15,11 +16,11 @@ galaxy_info:
         - bullseye
     - name: EL
       versions:
-        - 9
+        - '9'
     - name: Fedora
       versions:
-        - 38
-        - 39
+        - '38'
+        - '39'
     - name: Ubuntu
       versions:
         - focal
