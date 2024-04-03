@@ -3,7 +3,7 @@
   hosts: all
   roles:
     - role: '{{ playbook_dir }}'
-  cmds:
+  tasks:
     - name: Executing 'transmission-daemon --version'
       ansible.builtin.command: transmission-daemon --version
       changed_when: false
