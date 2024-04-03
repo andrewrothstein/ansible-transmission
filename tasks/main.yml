@@ -90,7 +90,7 @@
 - name: Executing '{{ transmission_make_install_cmd }}'
   become: true
   become_user: root
-  ansible.builtin.command: '{{ transmission_cmake_install_cmd }}'
+  ansible.builtin.command: '{{ transmission_make_install_cmd }}'
   args:
     chdir: '{{ transmission_build_dir }}'
     creates: '{{ transmission_exe }}'
