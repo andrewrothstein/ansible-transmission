@@ -77,7 +77,7 @@
   ansible.builtin.command: '{{ transmission_cmake_cmd }}'
   args:
     chdir: '{{ transmission_build_dir }}'
-    creates: '{{ transmission_Makefile }}'
+    creates: '{{ transmission_makefile }}'
 
 - name: Executing '{{ transmission_make_cmd }}'
   become: true

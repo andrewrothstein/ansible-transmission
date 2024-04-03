@@ -11,7 +11,7 @@ transmission_src_dir: '{{ transmission_parent_src_dir }}/{{ transmission_name }}
 transmission_build_dir: '{{ transmission_src_dir }}/build'
 
 transmission_cmake_cmd: cmake -DCMAKE_BUILD_TYPE={{ transmission_build_type }} {{ transmission_src_dir }}
-transmission_Makefile: '{{ transmission_build_dir }}/Makefile'
+transmission_makefile: '{{ transmission_build_dir }}/Makefile'
 
 transmission_make_cmd: make -j 4
 transmission_build_exe: '{{ transmission_build_dir }}/daemon/transmission-daemon'
