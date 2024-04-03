@@ -9,5 +9,5 @@
       changed_when: false
       register: transmission_test_output
     - name: Output from 'transmission-daemon --version'
-      ansible.buildin.debug:
+      ansible.builtin.debug:
         msg: '{{ transmission_test_output.stdout }}'
