@@ -10,4 +10,4 @@
       register: transmission_test_output
     - name: Output from 'transmission-daemon --version'
       ansible.builtin.debug:
-        msg: '{{ transmission_test_output.stdout }}'
+        msg: '{{ transmission_test_output.stderr }}'
