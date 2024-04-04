@@ -3,7 +3,6 @@ transmission_dep_pkgs:
   - libtool
   - intltool
   - libcurl-devel
-  - openssl-devel
   - glib2-devel
   - libevent-devel
   - miniupnpc-devel
